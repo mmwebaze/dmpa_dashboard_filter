@@ -1,0 +1,5 @@
+name: Dashboard filter
+type: module
+description: Redirects users away from unsubscribed dashboards
+core: 8.x
+package: dmpa

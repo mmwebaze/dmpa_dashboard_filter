@@ -1,0 +1,6 @@
+services:
+  dmpa_dashboard_filter.event_subscriber:
+    class: Drupal\dmpa_dashboard_filter\EventSubscriber\DashboardEventSubscriber
+    arguments: ['@request_stack', '@current_route_match', '@current_user']
+    tags:
+      - { name: event_subscriber }
