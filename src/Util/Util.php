@@ -19,7 +19,7 @@ class Util {
 
                 return $parameters[2];
             }
-            else if ($parameters[1] == 'resources'){
+            else if ($parameters[1] == 'process'){
 
                 return $parameters[3];
             }
