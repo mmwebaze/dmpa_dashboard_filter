@@ -2,6 +2,7 @@
 namespace Drupal\dmpa_dashboard_filter\EventSubscriber;
 
 use Drupal\Core\Session\AccountInterface;
+use Drupal\dmpa_dashboard_filter\Util\Util;
 use Drupal\taxonomy\Entity\Term;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -50,8 +51,8 @@ class DashboardEventSubscriber implements EventSubscriberInterface {
         $isAuthenticatedUser = $this->currentUser->isAuthenticated();
 
         if ($isAuthenticatedUser){
-            $voc = ['BURKINA FASO','DRC','GHANA','KENYA','MADAGASCAR','MALAWI','MOZAMBIQUE', 'NIGER','NIGERIA',
-                'SENEGAL','UGANDA','ZAMBIA'];
+            /*$voc = ['BURKINA-FASO','DRC','GHANA','KENYA','MADAGASCAR','MALAWI','MOZAMBIQUE', 'NIGER','NIGERIA',
+                'SENEGAL','UGANDA','ZAMBIA'];*/
             $request = $this->requestStack->getCurrentRequest();
             $basePath = $request->getPathInfo();
 
@@ -69,12 +70,15 @@ class DashboardEventSubscriber implements EventSubscriberInterface {
                 array_push($countries, strtoupper($term->getName()));
             }
 
-            $selectedCountry = strtoupper(explode('/',$basePath)[1]);
+            $url = Util::processUrl($basePath);
 
-            if (in_array($selectedCountry, $voc)){
+            if(!isset($url)){
+                return;
+            }
+            $selectedCountry = strtoupper($url);//strtoupper(explode('/',$basePath)[1]);
+
+            if (isset($selectedCountry)){
                 if (!in_array($selectedCountry, $countries)){
-                    drupal_set_message('You cannot view this dashboard');
-                    $response = $event->getResponse();
                     $event->setResponse(new RedirectResponse('http://google.com'));
 
                 }
